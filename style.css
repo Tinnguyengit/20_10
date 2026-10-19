@@ -1242,6 +1242,163 @@ body.has-dock .screen { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 
 }
 
 /* =========================================================
+   PRELOADER (recipient)
+   ========================================================= */
+.preloader {
+  position: fixed; inset: 0; z-index: 40;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+  background: radial-gradient(70% 60% at 50% 45%, #2c0a1a, #0a0206 75%);
+  transition: opacity .9s var(--ease), filter .9s var(--ease), transform 1s var(--ease);
+}
+.preloader.leaving { opacity: 0; filter: blur(10px); transform: scale(1.06); pointer-events: none; }
+.pre-ring { position: relative; width: 132px; height: 132px; display: grid; place-items: center; }
+.pre-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.pre-track { fill: none; stroke: rgba(244, 223, 182, .14); stroke-width: 2; }
+.pre-bar {
+  fill: none; stroke: url(#gPre); stroke-width: 2.5; stroke-linecap: round;
+  stroke-dasharray: 327; stroke-dashoffset: 327;
+  filter: drop-shadow(0 0 6px rgba(243, 113, 152, .8));
+  transition: stroke-dashoffset .5s var(--ease);
+}
+.pre-core {
+  width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 230, 238, .25), rgba(122, 28, 62, .5) 60%, rgba(40, 6, 20, .85));
+  box-shadow: 0 0 0 1px rgba(244, 223, 182, .4), 0 0 46px rgba(243, 113, 152, .45);
+  animation: corePulse 2.6s ease-in-out infinite;
+}
+.pre-core b {
+  font-family: var(--display); font-weight: 600; font-size: 1rem;
+  background: var(--foil-gold); background-size: 300% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent; animation: foil 5s linear infinite;
+}
+.pre-text { margin: 0; font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--champagne); letter-spacing: .03em; animation: tapBreath 2.4s ease-in-out infinite; }
+
+/* =========================================================
+   LIVE PREVIEW (sender compose)
+   ========================================================= */
+.compose-wrap { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 28px; margin: auto; }
+.compose-wrap .compose { max-width: none; }
+.live-preview { display: none; }
+.lp-fab {
+  position: fixed; z-index: 26; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); transform: translateX(-50%);
+  display: none; align-items: center; gap: 8px; min-height: 46px; padding: 10px 20px; border-radius: 999px; cursor: pointer;
+  color: var(--champagne); font-size: .9rem; font-weight: 500;
+  background: rgba(40, 8, 24, .82); border: 1px solid rgba(244, 223, 182, .4);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  box-shadow: 0 14px 40px -14px rgba(0, 0, 0, .8), 0 0 24px -6px rgba(243, 113, 152, .5);
+}
+#compose.is-active .lp-fab { display: inline-flex; }
+.lp-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.lp-label { margin: 0; display: flex; align-items: center; gap: 10px; font-size: .72rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--champagne); }
+.lp-dot { width: 7px; height: 7px; border-radius: 50%; background: #7ee0a5; box-shadow: 0 0 10px #7ee0a5; animation: tapBreath 1.8s ease-in-out infinite; }
+.lp-close { display: none; width: 36px; height: 36px; border-radius: 50%; border: 0; cursor: pointer; background: rgba(244, 223, 182, .12); color: var(--champagne); font-size: 1.3rem; line-height: 1; }
+.lp-stage { perspective: 1200px; }
+.lp-meta { margin: 12px 0 0; text-align: center; font-size: .8rem; color: var(--text-faint); }
+
+.greeting-mini { padding: 44px 34px 38px; transform: rotateY(-6deg) rotateX(3deg); transition: transform .8s var(--ease); }
+.lp-stage:hover .greeting-mini { transform: none; }
+.greeting-mini .g-rose { width: 70px; height: 70px; }
+.greeting-mini .g-rose-br { width: 78px; height: 78px; }
+.greeting-mini .corner { width: 40px; height: 40px; }
+.greeting-mini .g-date { margin: 0; font-size: 2.5rem; }
+.greeting-mini .g-title { font-size: 1.02rem; margin-top: 6px; }
+.greeting-mini .divider { margin-top: 12px; }
+.greeting-mini .g-to-label { margin: 16px 0 0; font-size: .62rem; letter-spacing: .32em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
+.greeting-mini .g-to-name { font-size: 2.4rem; margin: 0; }
+.greeting-mini .g-love { font-size: 1.7rem; margin-top: 18px; }
+.greeting-mini .g-from { position: relative; z-index: 2; margin-top: 2px; }
+.lp-from { font-family: var(--script); font-size: 1.5rem; color: #7c1f3f; }
+.lp-msg {
+  position: relative; z-index: 2; margin: 14px auto 0; max-width: 40ch; text-align: left;
+  font-family: var(--serif); font-weight: 500; font-size: 1.04rem; line-height: 1.7; color: #4a1a2c;
+  white-space: pre-line; overflow-wrap: anywhere;
+}
+.lp-msg::first-letter { font-family: var(--display); font-weight: 600; font-size: 1.5em; line-height: 1; color: #b2335c; }
+.lp-msg.is-default { color: #8a6170; font-style: italic; }
+.lp-pulse { animation: lpPulse .6s var(--ease); }
+@keyframes lpPulse { 0% { box-shadow: 0 0 0 1px rgba(217, 178, 111, .55), 0 0 0 0 rgba(243, 113, 152, .55); } 100% { box-shadow: 0 0 0 1px rgba(217, 178, 111, .55), 0 0 0 18px rgba(243, 113, 152, 0); } }
+
+@media (min-width: 1100px) {
+  .compose-wrap { max-width: 1120px; display: grid; grid-template-columns: minmax(0, 600px) minmax(0, 440px); align-items: start; justify-content: center; gap: 40px; }
+  .live-preview { display: block; position: sticky; top: 0; }
+  .lp-fab { display: none !important; }
+}
+@media (max-width: 1099px) {
+  .live-preview.open {
+    display: flex; flex-direction: column; position: fixed; inset: 0; z-index: 35; overflow-y: auto;
+    padding: calc(env(safe-area-inset-top, 0px) + 80px) 16px calc(env(safe-area-inset-bottom, 0px) + 24px);
+    background: rgba(12, 2, 7, .9); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    animation: fadeUp .45s var(--ease) both;
+  }
+  .live-preview.open .lp-stage { width: 100%; max-width: 440px; margin: 0 auto; }
+  .live-preview.open .lp-head { width: 100%; max-width: 440px; margin: 0 auto 14px; }
+  .live-preview.open .lp-close { display: block; }
+  .live-preview.open .greeting-mini { transform: none; }
+  #compose .compose { margin-bottom: 70px; }
+}
+@media (max-width: 640px) {
+  .greeting-mini { padding: 40px 24px 34px; }
+}
+
+/* save card */
+.save-status { margin: 4px 0 0; min-height: 1.3em; font-size: .86rem; color: var(--champagne); text-align: center; }
+
+/* =========================================================
+   MICRO-INTERACTIONS
+   ========================================================= */
+/* light that follows the pointer across glass panels */
+.panel { --sx: 50%; --sy: -30%; }
+.panel > .spot {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: -1;
+  background: radial-gradient(420px circle at var(--sx) var(--sy), rgba(255, 214, 228, .12), rgba(244, 210, 160, .05) 35%, transparent 65%);
+  opacity: 0; transition: opacity .5s var(--ease);
+}
+.panel:hover > .spot { opacity: 1; }
+/* magnetic primary buttons */
+.btn-lux { translate: var(--mx, 0) var(--my, 0); transition: transform .45s var(--ease), box-shadow .45s var(--ease), translate .35s var(--ease); }
+/* inputs: a soft sheen sweeps the field on focus */
+.field input:focus, .field textarea:focus, .field select:focus { background-image: linear-gradient(100deg, transparent 30%, rgba(255, 230, 238, .06) 50%, transparent 70%); background-size: 250% 100%; animation: fieldSheen 1.4s var(--ease) 1; }
+@keyframes fieldSheen { from { background-position: 120% 0; } to { background-position: -40% 0; } }
+
+/* =========================================================
+   TOP-TIER EFFECTS
+   ========================================================= */
+.sky-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+body.has-gl .nebula, body.has-gl .horizon { display: none; }
+
+/* the ground trembles as the gift bursts open */
+.intro.quake { animation: quake .6s cubic-bezier(.36, .07, .19, .97) both; }
+@keyframes quake {
+  10%, 90% { transform: translate3d(-1px, 1px, 0); }
+  20%, 80% { transform: translate3d(3px, -2px, 0); }
+  30%, 50%, 70% { transform: translate3d(-5px, 2px, 0); }
+  40%, 60% { transform: translate3d(5px, -1px, 0); }
+}
+/* a second, golden shock ring right behind the pink one */
+.shock::after {
+  content: ""; position: absolute; inset: -2px; border-radius: 50%;
+  border: 1.5px solid rgba(244, 210, 160, .9); box-shadow: 0 0 24px rgba(244, 210, 160, .7);
+  opacity: 0;
+}
+.gift-scene.open .shock::after { animation: shock2 1.6s var(--ease) forwards .28s; }
+@keyframes shock2 { 0% { opacity: 1; transform: scale(.4); } 100% { opacity: 0; transform: scale(3.6); } }
+
+/* names written in like ink spreading left to right */
+.gate.show-to .gate-to, .g-to.show .g-to-name {
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 40%, transparent 60%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 40%, transparent 60%, transparent 100%);
+  -webkit-mask-size: 300% 100%; mask-size: 300% 100%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  animation: inkReveal 2.4s cubic-bezier(.3, .6, .3, 1) both, foil 9s linear infinite;
+}
+@keyframes inkReveal { from { -webkit-mask-position: 100% 0; mask-position: 100% 0; } to { -webkit-mask-position: 0 0; mask-position: 0 0; } }
+
+.sky-hint { margin: 10px 0 0; font-size: .8rem; letter-spacing: .08em; color: var(--text-faint); transition: opacity .6s; }
+.sky-hint.used { opacity: 0; }
+#card.sky-armed { cursor: crosshair; }
+#card.sky-armed .card-tilt, #card.sky-armed .outro button { cursor: auto; }
+
+/* =========================================================
    0. GATE — the lights are off, a name appears
    ========================================================= */
 #gate { background: radial-gradient(90% 70% at 50% 45%, rgba(10, 1, 5, .35), rgba(6, 0, 3, .82) 75%); }

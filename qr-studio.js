@@ -370,5 +370,5 @@
     }
   }
 
-  window.QRStudio = { render, sample, contrast, W, H };
+  window.QRStudio = { render, sample, contrast, drawRose, W, H };
 })();

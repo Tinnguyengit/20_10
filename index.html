@@ -111,6 +111,21 @@
 </aside>
 <button class="yt-pill" id="ytPill" type="button" hidden>♪ Mở lại nhạc YouTube</button>
 
+<!-- Guest preloader: fonts + music get ready before the first word appears -->
+<div class="preloader" id="preloader" hidden aria-live="polite">
+  <div class="pre-ring" aria-hidden="true">
+    <svg viewBox="0 0 120 120">
+      <defs>
+        <linearGradient id="gPre" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6e3b4"/><stop offset=".5" stop-color="#f37198"/><stop offset="1" stop-color="#c99a4b"/></linearGradient>
+      </defs>
+      <circle cx="60" cy="60" r="52" class="pre-track"/>
+      <circle cx="60" cy="60" r="52" class="pre-bar" id="preBar"/>
+    </svg>
+    <span class="pre-core"><b>20·10</b></span>
+  </div>
+  <p class="pre-text" id="preText">Đang gói món quà…</p>
+</div>
+
 <main>
   <!-- ========== 0. GATE — "lights off" personal opening ========== -->
   <section class="screen" id="gate" aria-labelledby="gateTo">
@@ -214,6 +229,7 @@
 
   <!-- ========== 2. COMPOSE ========== -->
   <section class="screen" id="compose" aria-labelledby="composeTitle">
+    <div class="compose-wrap">
     <form class="panel compose" id="wishForm" novalidate autocomplete="off">
       <button type="button" class="link-btn logout" id="logoutBtn">Đăng xuất</button>
       <header class="panel-head">
@@ -311,6 +327,36 @@
 
       <button class="btn btn-lux btn-block btn-lg" type="submit"><span class="btn-label">💌 Tạo lời chúc</span></button>
     </form>
+
+    <aside class="live-preview" id="livePreview" aria-label="Xem trước thiệp">
+      <div class="lp-head">
+        <p class="lp-label"><span class="lp-dot" aria-hidden="true"></span>Xem trước thiệp</p>
+        <button type="button" class="lp-close" id="lpClose" aria-label="Đóng xem trước">×</button>
+      </div>
+      <div class="lp-stage">
+        <article class="greeting greeting-mini" id="lpCard">
+          <div class="paper-frame" aria-hidden="true">
+            <svg class="corner c-tl"><use href="#flourish"/></svg>
+            <svg class="corner c-tr"><use href="#flourish"/></svg>
+            <svg class="corner c-bl"><use href="#flourish"/></svg>
+            <svg class="corner c-br"><use href="#flourish"/></svg>
+          </div>
+          <svg class="g-rose g-rose-tl" aria-hidden="true"><use href="#rose"/></svg>
+          <svg class="g-rose g-rose-br" aria-hidden="true"><use href="#rose"/></svg>
+          <p class="g-date">20 <span>•</span> 10</p>
+          <p class="g-title">Happy Vietnamese Women's Day</p>
+          <div class="divider" aria-hidden="true"><span></span><i>❦</i><span></span></div>
+          <p class="g-to-label">Gửi</p>
+          <p class="g-to-name" id="lpTo">Người nhận</p>
+          <p class="lp-msg" id="lpMsg"></p>
+          <p class="g-love">With Love ❤️</p>
+          <p class="g-from"><span class="from-label">From</span> <span class="lp-from" id="lpFrom"></span></p>
+        </article>
+      </div>
+      <p class="lp-meta" id="lpMeta"></p>
+    </aside>
+    </div>
+    <button type="button" class="lp-fab" id="lpOpen"><span aria-hidden="true">👁</span> Xem trước thiệp</button>
   </section>
 
   <!-- ========== SHARE — QR studio ========== -->
@@ -513,14 +559,18 @@
         <p class="outro-sub">Happy Vietnamese Women's Day — 20/10</p>
         <p class="outro-ask" id="outroAsk">Cảm ơn vì đã luôn là chính mình.</p>
         <div class="outro-actions">
+          <button class="btn btn-lux" id="saveCardBtn" type="button"><span class="btn-label">💾 Lưu thiệp về máy</span></button>
           <button class="btn btn-ghost" id="replayBtn" type="button"><span class="btn-label">✨ Xem lại thiệp</span></button>
           <button class="btn btn-lux" id="backShareBtn" type="button" hidden><span class="btn-label">← Quay lại link gửi</span></button>
         </div>
+        <p class="save-status" id="saveStatus" role="status"></p>
+        <p class="sky-hint" id="skyHint">✦ Chạm lên bầu trời để bắn pháo hoa</p>
       </div>
     </div>
   </section>
 </main>
 
+<script src="sky-gl.js"></script>
 <script src="config.js"></script>
 <script src="qr-studio.js"></script>
 <script src="script.js"></script>
