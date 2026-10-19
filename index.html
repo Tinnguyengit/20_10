@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14050c">
+<title>Món Quà 20/10</title>
+<meta name="description" content="Thiệp điện tử chúc mừng Ngày Phụ nữ Việt Nam 20/10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!--BODY-START-->
+<!-- ===== Shared SVG symbols ===== -->
+<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="gPetalOuter" cx="50%" cy="70%" r="70%">
+      <stop offset="0" stop-color="#ffe4ec"/><stop offset="1" stop-color="#e9819e"/>
+    </radialGradient>
+    <radialGradient id="gPetalMid" cx="50%" cy="70%" r="70%">
+      <stop offset="0" stop-color="#f9adc1"/><stop offset="1" stop-color="#cf4772"/>
+    </radialGradient>
+    <radialGradient id="gPetalIn" cx="45%" cy="40%" r="65%">
+      <stop offset="0" stop-color="#e5678a"/><stop offset="1" stop-color="#94193f"/>
+    </radialGradient>
+    <linearGradient id="gLeaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6e4bd"/><stop offset="1" stop-color="#b98a45"/>
+    </linearGradient>
+    <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7e6bd"/><stop offset=".45" stop-color="#c99a4b"/><stop offset=".7" stop-color="#fff1cc"/><stop offset="1" stop-color="#a77a36"/>
+    </linearGradient>
+
+    <symbol id="rose" viewBox="0 0 120 120">
+      <g transform="translate(60 58)">
+        <path d="M6 26 C 30 26 48 38 54 56 C 34 56 16 46 6 26 Z" fill="url(#gLeaf)"/>
+        <path d="M-6 26 C -30 26 -48 38 -54 56 C -34 56 -16 46 -6 26 Z" fill="url(#gLeaf)" opacity=".85"/>
+        <g fill="url(#gPetalOuter)">
+          <ellipse cx="0" cy="-19" rx="22" ry="26"/>
+          <ellipse cx="0" cy="-19" rx="22" ry="26" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-19" rx="22" ry="26" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-19" rx="22" ry="26" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-19" rx="22" ry="26" transform="rotate(288)"/>
+        </g>
+        <g fill="url(#gPetalMid)">
+          <ellipse cx="0" cy="-10" rx="15" ry="17" transform="rotate(36)"/>
+          <ellipse cx="0" cy="-10" rx="15" ry="17" transform="rotate(126)"/>
+          <ellipse cx="0" cy="-10" rx="15" ry="17" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-10" rx="15" ry="17" transform="rotate(306)"/>
+        </g>
+        <circle r="12" fill="url(#gPetalIn)"/>
+        <path d="M-3 1 a3 3 0 1 1 6 0 a6 6 0 1 1 -12 0 a9 9 0 1 1 18 0" fill="none" stroke="#7e1636" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round"/>
+      </g>
+    </symbol>
+
+    <!-- gold corner flourish -->
+    <symbol id="flourish" viewBox="0 0 64 64">
+      <g fill="none" stroke="url(#gGold)" stroke-width="1.3" stroke-linecap="round">
+        <path d="M4 60 C4 30 14 12 34 7 C44 4.5 53 5 60 4"/>
+        <path d="M4 60 C9 44 20 36 29 38 C35 39.5 35.5 47 30 47.5 C26 48 25 44 27.5 42.5"/>
+        <path d="M10 26 C15 20 21 18 25 20"/>
+        <path d="M38 6 C40 12 46 15 51 12"/>
+      </g>
+      <circle cx="4" cy="60" r="2.2" fill="url(#gGold)"/>
+      <circle cx="60" cy="4" r="1.6" fill="url(#gGold)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ===== Atmosphere ===== -->
+<div class="sky" aria-hidden="true">
+  <div class="nebula neb-1"></div>
+  <div class="nebula neb-2"></div>
+  <div class="nebula neb-3"></div>
+  <div class="horizon"></div>
+</div>
+<canvas id="fxBack" class="fx fx-back" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<canvas id="fxFront" class="fx fx-front" aria-hidden="true"></canvas>
+<div class="flash" id="flash" aria-hidden="true"></div>
+<div class="flare" id="flare" aria-hidden="true"></div>
+
+<!-- ===== Transitions ===== -->
+<div class="cine" id="cine" aria-hidden="true">
+  <div class="cine-veil"></div>
+  <div class="cine-line"></div>
+  <div class="cine-bar cine-top"></div>
+  <div class="cine-bar cine-bottom"></div>
+</div>
+<div class="iris" id="iris" aria-hidden="true"></div>
+
+<button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Bật nhạc nền">
+  <span class="music-ring"></span>
+  <span class="music-icon" aria-hidden="true">🎵</span>
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+</button>
+
+<button class="chip exit-preview" id="exitPreview" type="button" hidden>← Thoát xem trước</button>
+
+<!-- YouTube mini player (self-hosted sites only). YouTube requires the player to stay visible while it plays. -->
+<aside class="yt-dock" id="ytDock" hidden aria-label="Trình phát nhạc YouTube">
+  <div class="yt-head">
+    <span class="yt-eq" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="yt-title" id="ytTitle">Đang phát từ YouTube</span>
+    <button class="yt-min" id="ytMin" type="button" aria-label="Thu nhỏ và tạm dừng nhạc">–</button>
+  </div>
+  <div class="yt-frame"><div id="ytPlayer"></div></div>
+  <p class="yt-hint" id="ytHint" hidden>Chạm ▶ trong khung để nghe nhạc</p>
+</aside>
+<button class="yt-pill" id="ytPill" type="button" hidden>♪ Mở lại nhạc YouTube</button>
+
+<main>
+  <!-- ========== 0. GATE — "lights off" personal opening ========== -->
+  <section class="screen" id="gate" aria-labelledby="gateTo">
+    <div class="gate" id="gateBtn" role="button" tabindex="0" aria-label="Chạm để mở món quà">
+      <div class="gate-orb" aria-hidden="true">
+        <span class="gate-ring r1"></span>
+        <span class="gate-ring r2"></span>
+        <span class="gate-ring r3"></span>
+        <span class="gate-core"><b>20·10</b></span>
+      </div>
+      <p class="gate-to" id="gateTo"></p>
+      <p class="gate-line"><span id="gateLine"></span><span class="gate-caret" id="gateCaret"></span></p>
+      <p class="gate-tap"><span></span>Chạm để bắt đầu<span></span></p>
+      <p class="gate-sound" aria-hidden="true">♪ Chạm vào màn hình để bật nhạc</p>
+    </div>
+  </section>
+
+  <!-- ========== 1. INTRO / GIFT BOX ========== -->
+  <section class="screen" id="intro" aria-labelledby="introTitle">
+    <div class="intro" id="introInner">
+      <div class="intro-top">
+      <p class="eyebrow"><span class="eb-line"></span>Ngày Phụ nữ Việt Nam · 2026<span class="eb-line"></span></p>
+      <h1 class="hero-date" id="introTitle" aria-label="20 • 10">
+        <span class="ch" style="--i:0">2</span><span class="ch" style="--i:1">0</span><span class="sep" aria-hidden="true">•</span><span class="ch" style="--i:3">1</span><span class="ch" style="--i:4">0</span>
+      </h1>
+      <p class="hero-en">Happy Vietnamese Women's Day</p>
+      <p class="intro-for" id="introFor" hidden>Một món quà dành riêng cho <span id="introName"></span></p>
+      </div>
+
+      <div class="gift-scene" id="giftScene" role="button" tabindex="0" aria-label="Mở hộp quà">
+        <div class="rays"></div>
+        <div class="halo"></div>
+        <div class="floor"></div>
+        <div class="orbit"><div class="orbit-spin"><i></i><i></i><i></i><i></i></div></div>
+        <div class="beam"></div>
+        <div class="shock"></div>
+        <div class="box" id="box">
+          <div class="body">
+            <div class="face f-front"><i class="rib"></i></div>
+            <div class="face f-back"><i class="rib"></i></div>
+            <div class="face f-right"><i class="rib"></i></div>
+            <div class="face f-left"><i class="rib"></i></div>
+            <div class="face f-bottom"></div>
+            <div class="face f-inner"></div>
+          </div>
+          <div class="lid">
+            <div class="face l-front"><i class="rib"></i></div>
+            <div class="face l-back"><i class="rib"></i></div>
+            <div class="face l-right"><i class="rib"></i></div>
+            <div class="face l-left"><i class="rib"></i></div>
+            <div class="face l-top"><i class="rib"></i><i class="rib rib-h"></i></div>
+            <div class="bow"><span class="loop loop-l"></span><span class="loop loop-r"></span><span class="tail tail-l"></span><span class="tail tail-r"></span><span class="knot"></span></div>
+            <div class="bow bow-2"><span class="loop loop-l"></span><span class="loop loop-r"></span><span class="knot"></span></div>
+          </div>
+        </div>
+        <div class="tag" id="giftTag" hidden>
+          <span class="tag-string"></span>
+          <span class="tag-card"><span class="tag-to">Gửi</span><span class="tag-name" id="tagName"></span></span>
+        </div>
+      </div>
+
+      <div class="intro-bottom">
+        <p class="lead">Một ngày đặc biệt dành cho những người phụ nữ tuyệt vời.</p>
+        <div class="unwrap" id="unwrap">
+          <p class="unwrap-hint" id="unwrapHint" aria-live="polite">Chạm vào hộp quà để gỡ nơ</p>
+          <div class="pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SENDER LOGIN ========== -->
+  <section class="screen" id="login" aria-labelledby="loginTitle">
+    <form class="panel login" id="loginForm" novalidate autocomplete="off">
+      <svg class="panel-rose" aria-hidden="true"><use href="#rose"/></svg>
+      <header class="panel-head">
+        <p class="panel-eyebrow">20 • 10 · Atelier</p>
+        <h2 class="panel-title" id="loginTitle">Khu vực người gửi</h2>
+        <p class="sub">Đăng nhập để chuẩn bị món quà và lấy link gửi cho người nhận.</p>
+      </header>
+      <div class="field" id="pwField">
+        <label for="password">Mật khẩu</label>
+        <div class="pw-wrap">
+          <input id="password" name="password" type="password" placeholder="Nhập mật khẩu người gửi" aria-describedby="pwError" autocomplete="current-password">
+          <button type="button" class="pw-toggle" id="pwToggle" aria-label="Hiện mật khẩu">Hiện</button>
+        </div>
+        <p class="error" id="pwError" role="alert"></p>
+      </div>
+      <button class="btn btn-lux btn-block btn-lg" type="submit"><span class="btn-label">Đăng nhập</span></button>
+      <p class="panel-note">Người nhận không cần đăng nhập. Họ chỉ mở link bạn gửi.</p>
+    </form>
+  </section>
+
+  <!-- ========== BROKEN LINK ========== -->
+  <section class="screen" id="broken" aria-labelledby="brokenTitle">
+    <div class="panel broken">
+      <svg class="panel-rose" aria-hidden="true"><use href="#rose"/></svg>
+      <h2 class="panel-title" id="brokenTitle">Không mở được món quà</h2>
+      <p class="sub">Đường link có thể đã bị cắt mất một đoạn khi sao chép. Hãy nhờ người gửi gửi lại link đầy đủ nhé.</p>
+    </div>
+  </section>
+
+  <!-- ========== 2. COMPOSE ========== -->
+  <section class="screen" id="compose" aria-labelledby="composeTitle">
+    <form class="panel compose" id="wishForm" novalidate autocomplete="off">
+      <button type="button" class="link-btn logout" id="logoutBtn">Đăng xuất</button>
+      <header class="panel-head">
+        <p class="panel-eyebrow">Bước 1 / 2 · Viết lời chúc</p>
+        <h2 class="panel-title" id="composeTitle">💐 Gửi một lời yêu thương</h2>
+        <p class="sub">Để tôi giúp bạn tạo nên một lời chúc thật đặc biệt.</p>
+      </header>
+
+      <div class="field" id="recipientField">
+        <label for="recipient">Tên người nhận <span class="req" aria-hidden="true">*</span></label>
+        <input id="recipient" name="recipient" type="text" maxlength="40" placeholder="Nhập tên người bạn muốn gửi lời chúc..." aria-describedby="recipientError" required>
+        <p class="error" id="recipientError" role="alert"></p>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="sender">Người gửi</label>
+          <input id="sender" name="sender" type="text" maxlength="40" placeholder="Tên của bạn">
+        </div>
+        <div class="field">
+          <label for="relation">Mối quan hệ</label>
+          <div class="select-wrap">
+            <select id="relation" name="relation">
+              <option>Mẹ</option>
+              <option>Người yêu</option>
+              <option>Vợ</option>
+              <option>Chị</option>
+              <option>Em gái</option>
+              <option>Cô giáo</option>
+              <option>Bạn thân</option>
+              <option selected>Người đặc biệt</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field music-field">
+        <label for="musicSel">Nhạc nền</label>
+        <div class="music-row">
+          <div class="select-wrap"><select id="musicSel"></select></div>
+          <button type="button" class="btn btn-ghost btn-sm" id="musicPreview"><span class="btn-label">▶ Nghe thử</span></button>
+        </div>
+
+        <div class="music-sub" id="ytBox" hidden>
+          <input id="ytUrl" type="url" inputmode="url" placeholder="https://www.youtube.com/watch?v=…">
+          <p class="note" id="ytNote">Dán link video YouTube. Người nhận sẽ thấy một khung phát nhỏ ở góc màn hình, vì YouTube yêu cầu khung phát luôn hiện khi đang chơi nhạc.</p>
+        </div>
+
+        <div class="music-sub" id="urlBox" hidden>
+          <input id="musicUrl" type="url" inputmode="url" placeholder="https://…/bai-hat.mp3">
+          <p class="note">Dán đường dẫn trực tiếp tới file nhạc (.mp3, .m4a, .webm). Link YouTube hay Spotify không phát được.</p>
+        </div>
+
+        <div class="music-sub upload-box" id="uploadBox" hidden>
+          <label class="drop" for="musicFile" id="dropZone">
+            <span class="drop-icon" aria-hidden="true">♫</span>
+            <span class="drop-text" id="dropText">Chọn file nhạc trên máy (mp3, m4a, wav…)</span>
+          </label>
+          <input id="musicFile" type="file" accept="audio/*,video/mp4,video/webm,.mp3,.m4a,.wav,.ogg,.aac,.flac,.webm,.mp4" class="visually-hidden">
+          <input id="musicName" type="text" maxlength="60" placeholder="Tên bài hát">
+          <div class="upload-actions">
+            <button type="button" class="btn btn-lux btn-sm" id="musicUpload" disabled><span class="btn-label">Tải lên thư viện</span></button>
+            <button type="button" class="link-btn" id="uploadCancel">Hủy</button>
+          </div>
+          <div class="progress" id="uploadProgress" hidden><span id="uploadBar"></span></div>
+          <p class="upload-status" id="uploadStatus" role="status"></p>
+        </div>
+
+        <div class="music-extra" id="musicExtra" hidden>
+          <label class="inline-field" for="musicStart">Phát từ giây
+            <input id="musicStart" type="number" min="0" max="900" step="1" value="0" inputmode="numeric">
+          </label>
+          <button type="button" class="link-btn danger" id="musicDelete" hidden>Xóa bài này khỏi thư viện</button>
+        </div>
+        <p class="note" id="musicNote"></p>
+      </div>
+
+      <div class="field">
+        <label for="message">Lời chúc</label>
+        <textarea id="message" name="message" rows="5" maxlength="600" placeholder="Viết những điều bạn muốn nói..."></textarea>
+        <div class="field-foot">
+          <span class="note">Để trống sẽ dùng lời chúc mặc định.</span>
+          <span class="count" id="count">0/600</span>
+        </div>
+      </div>
+
+      <div class="suggest-row">
+        <label class="toggle" for="useSuggest">
+          <input type="checkbox" id="useSuggest">
+          <span class="switch" aria-hidden="true"></span>
+          <span>💖 Sử dụng lời chúc gợi ý</span>
+        </label>
+        <button type="button" class="link-btn" id="shuffle" hidden>↻ Gợi ý khác</button>
+      </div>
+
+      <button class="btn btn-lux btn-block btn-lg" type="submit"><span class="btn-label">💌 Tạo lời chúc</span></button>
+    </form>
+  </section>
+
+  <!-- ========== SHARE — QR studio ========== -->
+  <section class="screen" id="share" aria-labelledby="shareTitle">
+    <div class="panel share">
+      <header class="panel-head">
+        <p class="panel-eyebrow">Bước 2 / 2 · Đã gói xong</p>
+        <h2 class="panel-title" id="shareTitle">💝 Mã QR món quà</h2>
+        <p class="sub">Gửi mã này cho <strong id="shareName"></strong>. Người nhận chỉ cần mở camera điện thoại và quét là thấy hộp quà.</p>
+      </header>
+
+      <div class="qr-layout">
+        <div class="qr-preview">
+          <div class="qr-canvas-wrap">
+            <canvas id="qrCanvas" width="1080" height="1320" role="img" aria-label="Mã QR mở món quà"></canvas>
+            <div class="qr-loading" id="qrLoading">Đang vẽ mã…</div>
+          </div>
+          <p class="qr-check" id="qrCheck" role="status"></p>
+          <div class="qr-actions">
+            <button class="btn btn-lux" id="qrDownload" type="button"><span class="btn-label">⬇ Tải ảnh QR</span></button>
+            <button class="btn btn-ghost" id="qrCopy" type="button"><span class="btn-label">⧉ Sao chép ảnh</span></button>
+          </div>
+          <p class="copy-status" id="qrStatus" role="status"></p>
+        </div>
+
+        <div class="qr-controls">
+          <div class="ctl">
+            <p class="ctl-label">Khung</p>
+            <div class="chips" data-key="frame">
+              <button type="button" data-v="heart">Trái tim</button>
+              <button type="button" data-v="circle">Tròn</button>
+              <button type="button" data-v="rounded">Bo góc</button>
+              <button type="button" data-v="square">Vuông</button>
+            </div>
+          </div>
+          <div class="ctl">
+            <p class="ctl-label">Kiểu chấm</p>
+            <div class="chips" data-key="dot">
+              <button type="button" data-v="rounded">Bo liền</button>
+              <button type="button" data-v="heart">Trái tim</button>
+              <button type="button" data-v="dots">Chấm tròn</button>
+              <button type="button" data-v="diamond">Kim cương</button>
+              <button type="button" data-v="square">Vuông</button>
+            </div>
+          </div>
+          <div class="ctl">
+            <p class="ctl-label">Ba góc định vị</p>
+            <div class="chips" data-key="eye">
+              <button type="button" data-v="rounded">Bo tròn</button>
+              <button type="button" data-v="heart">Tim</button>
+              <button type="button" data-v="circle">Tròn</button>
+              <button type="button" data-v="leaf">Chiếc lá</button>
+              <button type="button" data-v="square">Vuông</button>
+            </div>
+          </div>
+          <div class="ctl">
+            <p class="ctl-label">Bảng màu</p>
+            <div class="swatches" id="qrPalettes"></div>
+            <details class="custom-colors" id="qrCustom">
+              <summary>Tự chọn màu</summary>
+              <div class="color-grid">
+                <label class="color-field" for="qcC1"><input type="color" id="qcC1" data-c="c1"><span>Màu chấm</span></label>
+                <label class="color-field" for="qcC2"><input type="color" id="qcC2" data-c="c2"><span>Màu chuyển</span></label>
+                <label class="color-field" for="qcCe"><input type="color" id="qcCe" data-c="ce"><span>Màu góc</span></label>
+                <label class="color-field" for="qcQbg"><input type="color" id="qcQbg" data-c="qbg"><span>Nền mã</span></label>
+                <label class="color-field" for="qcCard"><input type="color" id="qcCard" data-c="cardBg"><span>Nền thẻ</span></label>
+                <label class="color-field" for="qcBorder"><input type="color" id="qcBorder" data-c="border"><span>Viền</span></label>
+              </div>
+              <div class="chips chips-sm" data-key="grad">
+                <button type="button" data-v="none">Một màu</button>
+                <button type="button" data-v="linear">Chuyển chéo</button>
+                <button type="button" data-v="radial">Tỏa từ tâm</button>
+              </div>
+            </details>
+          </div>
+          <div class="ctl">
+            <p class="ctl-label">Biểu tượng giữa</p>
+            <div class="chips" data-key="icon">
+              <button type="button" data-v="heart">♥ Trái tim</button>
+              <button type="button" data-v="rose">✿ Hoa hồng</button>
+              <button type="button" data-v="text">20/10</button>
+              <button type="button" data-v="none">Không</button>
+            </div>
+          </div>
+          <div class="ctl two">
+            <div class="field">
+              <label for="qrCap1">Dòng chữ lớn</label>
+              <input id="qrCap1" type="text" maxlength="32">
+            </div>
+            <div class="field">
+              <label for="qrCap2">Dòng chữ nhỏ</label>
+              <input id="qrCap2" type="text" maxlength="40">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="share-summary">
+        <span class="sum-seal" aria-hidden="true">20·10</span>
+        <div class="sum-body">
+          <p class="sum-meta"><span id="sumRel"></span> · từ <span id="sumFrom"></span></p>
+          <p class="sum-msg" id="sumMsg"></p>
+          <p class="sum-music" id="sumMusic"></p>
+        </div>
+      </div>
+
+      <details class="link-alt">
+        <summary>Hoặc gửi bằng link</summary>
+        <div class="field">
+          <label for="shareLink">Link gửi người nhận</label>
+          <div class="link-row">
+            <input id="shareLink" type="text" readonly>
+            <button class="btn btn-lux" id="copyBtn" type="button"><span class="btn-label">Sao chép</span></button>
+          </div>
+          <p class="copy-status" id="copyStatus" role="status"></p>
+          <a class="link-btn" id="openLink" href="#" target="_blank" rel="noopener">Mở link trong tab mới ↗</a>
+        </div>
+      </details>
+
+      <div class="share-actions">
+        <button class="btn btn-ghost" id="previewBtn" type="button"><span class="btn-label">👁 Xem trước như người nhận</span></button>
+      </div>
+
+      <div class="share-foot">
+        <button class="link-btn" id="editBtn" type="button">← Chỉnh sửa lời chúc</button>
+        <button class="link-btn" id="newBtn" type="button">↩ Tạo lời chúc khác</button>
+      </div>
+      <p class="panel-note">Lời chúc nằm ngay trong mã QR và link, nên ai quét được mã đều đọc được. Chỉ gửi riêng cho người nhận nhé.</p>
+    </div>
+  </section>
+
+  <!-- ========== 3. GREETING CARD ========== -->
+  <section class="screen" id="card" aria-label="Thiệp chúc mừng 20/10">
+    <div class="card-layout">
+      <div class="card-stage" id="cardStage">
+        <div class="bloom-wrap" aria-hidden="true"><div class="bloom" id="bloom"></div></div>
+        <div class="card-in">
+          <div class="card-tilt" id="cardTilt">
+            <article class="greeting" id="greeting">
+              <div class="paper-frame" aria-hidden="true">
+                <svg class="corner c-tl"><use href="#flourish"/></svg>
+                <svg class="corner c-tr"><use href="#flourish"/></svg>
+                <svg class="corner c-bl"><use href="#flourish"/></svg>
+                <svg class="corner c-br"><use href="#flourish"/></svg>
+              </div>
+              <svg class="g-rose g-rose-tl" aria-hidden="true"><use href="#rose"/></svg>
+              <svg class="g-rose g-rose-br" aria-hidden="true"><use href="#rose"/></svg>
+
+              <header class="g-head reveal" id="gHead">
+                <p class="g-kicker">Thiệp chúc mừng</p>
+                <p class="g-date">20 <span>•</span> 10</p>
+                <p class="g-title">Happy Vietnamese Women's Day</p>
+                <div class="divider" aria-hidden="true"><span></span><i>❦</i><span></span></div>
+              </header>
+
+              <div class="g-to reveal" id="gTo">
+                <p class="g-to-label">Gửi</p>
+                <p class="g-to-name" id="toName"></p>
+                <svg class="name-flourish" viewBox="0 0 240 24" aria-hidden="true"><path d="M6 15 C 50 4, 88 22, 120 13 S 192 4, 234 14"/></svg>
+              </div>
+
+              <div class="g-msg reveal" id="gMsg">
+                <p class="g-msg-ghost" id="msgGhost" aria-hidden="true"></p>
+                <p class="g-msg-text"><span id="msgText"></span><span class="caret" id="caret"></span></p>
+              </div>
+
+              <footer class="g-sign reveal" id="gSign">
+                <p class="g-love">With Love ❤️</p>
+                <p class="g-from"><span class="from-label">From</span> <span id="fromName"></span></p>
+              </footer>
+
+              <div class="g-holo" aria-hidden="true"></div>
+              <div class="g-sheen" aria-hidden="true"></div>
+            </article>
+
+            <div class="cover" id="cover" aria-hidden="true">
+              <div class="cover-frame">
+                <svg class="corner c-tl"><use href="#flourish"/></svg>
+                <svg class="corner c-tr"><use href="#flourish"/></svg>
+                <svg class="corner c-bl"><use href="#flourish"/></svg>
+                <svg class="corner c-br"><use href="#flourish"/></svg>
+              </div>
+              <svg class="cover-rose"><use href="#rose"/></svg>
+              <p class="cover-date">20 • 10</p>
+              <p class="cover-for">Dành tặng</p>
+              <p class="cover-name" id="coverName"></p>
+              <div class="seal" id="seal">
+                <span class="seal-half seal-l"><span class="seal-face"><b>20·10</b></span></span>
+                <span class="seal-half seal-r"><span class="seal-face"><b>20·10</b></span></span>
+              </div>
+              <div class="cover-shine"></div>
+            </div>
+          </div>
+        </div>
+        <p class="tap-hint" id="tapHint">Chạm vào thiệp để đọc ngay</p>
+      </div>
+
+      <div class="outro" id="outro">
+        <div class="outro-orn" aria-hidden="true"><span></span><i>✦</i><span></span></div>
+        <p class="outro-line">🌷 Chúc những người phụ nữ tuyệt vời luôn được yêu thương 🌷</p>
+        <p class="outro-sub">Happy Vietnamese Women's Day — 20/10</p>
+        <p class="outro-ask" id="outroAsk">Cảm ơn vì đã luôn là chính mình.</p>
+        <div class="outro-actions">
+          <button class="btn btn-ghost" id="replayBtn" type="button"><span class="btn-label">✨ Xem lại thiệp</span></button>
+          <button class="btn btn-lux" id="backShareBtn" type="button" hidden><span class="btn-label">← Quay lại link gửi</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="config.js"></script>
+<script src="qr-studio.js"></script>
+<script src="script.js"></script>
+<!--BODY-END-->
+</body>
+</html>

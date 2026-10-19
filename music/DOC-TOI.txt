@@ -1,0 +1,14 @@
+Thư mục nhạc cho bản tự đưa lên mạng (Netlify, GitHub Pages...)
+
+1. Chép file nhạc (.mp3, .m4a, .webm) vào thư mục này, ví dụ: bai-hat.mp3
+2. Mở config.js, thêm vào MUSIC_LIBRARY:
+     { name: 'Bài hát của chúng mình', url: 'music/bai-hat.mp3' },
+3. Đăng nhập trang người gửi, chọn bài trong mục "Nhạc nền".
+
+Bạn cũng có thể chọn "Dán link file nhạc..." và dán đường dẫn trực tiếp tới một file nhạc trên mạng.
+
+Nhạc từ YouTube
+- Trong mục "Nhạc nền", chọn "Dán link YouTube..." rồi dán link video (có thể kèm thời điểm bắt đầu, ví dụ ?t=65).
+- Người nhận sẽ thấy một khung phát nhỏ ở cuối màn hình: YouTube yêu cầu khung phát luôn hiện khi đang chơi nhạc. Bấm "–" để thu nhỏ (nhạc tạm dừng).
+- Một số video bị chủ sở hữu tắt chế độ phát trên trang khác; khi đó trang tự dùng hộp nhạc thay thế. Hãy bấm "Nghe thử" trước khi gửi.
+- Lựa chọn YouTube chỉ hoạt động ở bản tự đưa lên mạng, không chạy trên trang Claude.
